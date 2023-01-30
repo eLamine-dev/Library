@@ -1,3 +1,5 @@
+let library = [];
+
 class Book {
    constructor(name, author, pages, read) {
       this.name = name;
@@ -8,5 +10,9 @@ class Book {
 
    finished() {
       this.read = true;
+   }
+
+   addBook() {
+      library.push(this);
    }
 }
