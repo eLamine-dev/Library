@@ -20,15 +20,19 @@ class Book {
    }
 }
 
-function addBook(author, title, pages, read) {
+function addBook() {
+   const author = newBookForm.elements.author.value;
+   const title = newBookForm.elements.title.value;
+   const pages = newBookForm.elements.pages.value;
+   const read = newBookForm.elements.read.checked;
    const newBook = new Book(author, title, pages, read);
-   library.push(newBook);
    updateLibrary(newBook);
+   console.log(newBook);
 }
 
 function updateLibrary(newBook) {
+   library.push(newBook);
    const bookCard = document.createElement('div');
-   const index = library.indexOf(newBook);
    bookCard.classList.add('book-card');
    bookCard.innerHTML = `
       <h2>${newBook.title}</h2>
@@ -41,17 +45,17 @@ function updateLibrary(newBook) {
    booksContainer.appendChild(bookCard);
 
    bookCard.addEventListener('click', (event) => {
-      event.preventDefault();
+      const targetIndex = library.indexOf(newBook);
       if (event.target.classList.contains('remove-book')) {
-         library.splice(index, 1);
+         library.splice(targetIndex, 1);
          bookCard.remove();
 
          console.log(library);
          console.log(booksContainer);
       } else if (event.target.classList.contains('toggle-read')) {
-         newBook.toggleRead();
+         library[targetIndex].toggleRead();
          bookCard.querySelector('#read').textContent = `Read: ${
-            newBook.read ? 'Yes' : 'No'
+            library[targetIndex].read ? 'Yes' : 'No'
          }`;
       }
    });
@@ -59,13 +63,7 @@ function updateLibrary(newBook) {
 
 newBookForm.addEventListener('submit', (event) => {
    event.preventDefault();
-   console.log(event);
-   const author = newBookForm.elements.author.value;
-   const title = newBookForm.elements.title.value;
-   const pages = newBookForm.elements.pages.value;
-   const read = newBookForm.elements.read.checked;
-
-   addBook(author, title, pages, read);
+   addBook();
    formModal.close();
    newBookForm.reset();
    console.log(library);
@@ -79,22 +77,3 @@ newBookBtn.addEventListener('click', () => {
 closeNewBookForm.addEventListener('click', () => {
    formModal.close();
 });
-
-// booksContainer.addEventListener('click', (event) => {
-//    const bookCardIndex = event.target.dataset.index;
-//    const targetBook = document.querySelector(
-//       `[data-index="${bookCardIndex}"]`
-//    );
-//    if (event.target.classList.contains('remove-book')) {
-//       delete library[bookCardIndex];
-//       booksContainer.removeChild(targetBook);
-
-//       console.log(library);
-//       console.log(booksContainer);
-//    } else if (event.target.classList.contains('toggle-read')) {
-//       library[bookCardIndex].toggleRead();
-//       targetBook.querySelector('#read').textContent = `Read: ${
-//          library[bookCardIndex].read ? 'Yes' : 'No'
-//       }`;
-//    }
-// });
