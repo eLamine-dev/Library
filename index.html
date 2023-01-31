@@ -4,8 +4,30 @@
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="reset.css" />
+      <link rel="stylesheet" href="style.css" />
       <script src="app.js" defer></script>
-      <title>Library</title>
+      <title>Document</title>
    </head>
-   <body></body>
+   <body>
+      <header id="header">
+         <h1>Library</h1>
+      </header>
+
+      <dialog id="form-modal">
+         <form id="new-book-form">
+            <input type="text" id="author" placeholder="Author" required />
+            <input type="text" id="title" placeholder="Title" required />
+            <input type="number" id="pages" placeholder="Pages" required />
+            <label for="read">Read:</label>
+            <input type="checkbox" id="read" />
+            <button type="submit" id="submit-new-book">Add Book</button>
+            <button type="button" id="cancel-book-btn">Cancel</button>
+         </form>
+      </dialog>
+
+      <div id="books-container">
+         <button id="new-book-btn">New Book</button>
+      </div>
+   </body>
 </html>
