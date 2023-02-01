@@ -16,18 +16,27 @@
 
       <dialog id="form-modal">
          <form id="new-book-form">
-            <input type="text" id="author" placeholder="Author" required />
+            <header>
+               <h3>Add new book</h3>
+               <button type="button" id="cancel-book-btn">x</button>
+            </header>
             <input type="text" id="title" placeholder="Title" required />
+            <input type="text" id="author" placeholder="Author" required />
             <input type="number" id="pages" placeholder="Pages" required />
-            <label for="read">Read:</label>
-            <input type="checkbox" id="read" />
-            <button type="submit" id="submit-new-book">Add Book</button>
-            <button type="button" id="cancel-book-btn">Cancel</button>
+            <input type="number" id="progress" placeholder="Pages read" />
+            <div>
+               <label for="read">Read:</label>
+               <input type="checkbox" id="read" />
+            </div>
+            <footer>
+               <button type="reset" id="reset-form">Clear</button>
+               <button type="submit" id="submit-new-book">Add Book</button>
+            </footer>
          </form>
       </dialog>
 
       <div id="books-container">
-         <button id="new-book-btn">New Book</button>
+         <button id="new-book-btn">+</button>
       </div>
    </body>
 </html>

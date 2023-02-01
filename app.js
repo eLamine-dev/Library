@@ -8,10 +8,11 @@ const newBookForm = document.getElementById('new-book-form');
 const library = [];
 
 class Book {
-   constructor(title, author, pages, read) {
+   constructor(title, author, pages, progress, read) {
       this.title = title;
       this.author = author;
       this.pages = pages;
+      this.progress = progress;
       this.read = read;
    }
 
@@ -21,13 +22,13 @@ class Book {
 }
 
 function addBook() {
-   const author = newBookForm.elements.author.value;
    const title = newBookForm.elements.title.value;
+   const author = newBookForm.elements.author.value;
    const pages = newBookForm.elements.pages.value;
+   const progress = newBookForm.elements.progress.value;
    const read = newBookForm.elements.read.checked;
-   const newBook = new Book(author, title, pages, read);
+   const newBook = new Book(title, author, pages, progress, read);
    updateLibrary(newBook);
-   console.log(newBook);
 }
 
 function updateLibrary(newBook) {
@@ -38,13 +39,18 @@ function updateLibrary(newBook) {
       <h2>${newBook.title}</h2>
       <p>Author: ${newBook.author}</p>
       <p>Pages: ${newBook.pages}</p>
+      <input type="number" name="pre" id="" value="${
+         newBook.progress || 0
+      }" min="0" max="${newBook.pages}">
       <p id="read">Read: ${newBook.read ? 'Yes' : 'No'}</p>
+      <div class="card-buttons">
       <button class="remove-book">Remove Book</button>
       <button class="toggle-read">Toggle Read</button>
-    `;
-   booksContainer.appendChild(bookCard);
+      </div>
+      `;
 
    bookCard.addEventListener('click', (event) => {
+      console.log(newBook);
       const targetIndex = library.indexOf(newBook);
       if (event.target.classList.contains('remove-book')) {
          library.splice(targetIndex, 1);
@@ -59,6 +65,8 @@ function updateLibrary(newBook) {
          }`;
       }
    });
+
+   booksContainer.appendChild(bookCard);
 }
 
 newBookForm.addEventListener('submit', (event) => {
@@ -71,7 +79,7 @@ newBookForm.addEventListener('submit', (event) => {
 });
 
 newBookBtn.addEventListener('click', () => {
-   formModal.show();
+   formModal.showModal()();
 });
 
 closeNewBookForm.addEventListener('click', () => {
