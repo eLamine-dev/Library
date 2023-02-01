@@ -39,9 +39,20 @@ function updateLibrary(newBook) {
       <h2>${newBook.title}</h2>
       <p>Author: ${newBook.author}</p>
       <p>Pages: ${newBook.pages}</p>
-      <input type="number" name="pre" id="" value="${
-         newBook.progress || 0
-      }" min="0" max="${newBook.pages}">
+      <div class="ctrl">
+         <div class="ctrl__button ctrl__button--decrement">-</div>
+         <div class="ctrl__counter">
+            <input
+            id="progress"
+            class="ctrl__counter-input"
+            maxlength="10"
+            type="number"
+            value="0"
+            max="20"
+            />
+          </div>
+         <div class="ctrl__button ctrl__button--increment">+</div>
+      </div>
       <p id="read">Read: ${newBook.read ? 'Yes' : 'No'}</p>
       <div class="card-buttons">
       <button class="remove-book">Remove Book</button>

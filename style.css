@@ -63,23 +63,25 @@ header h1 {
    flex-direction: column;
    justify-content: space-around;
    align-items: center;
-   border: var(--darker) 3px solid;
+   border: none;
    border-radius: 1rem;
+   color: var(--dark);
    background-color: var(--lighter);
 }
 
 #new-book-btn {
-   border: var(--darker) 3px solid;
+   border: none;
    font-size: 3rem;
    font-weight: 800;
    order: 1;
    height: 100px;
    width: 100px;
    border-radius: 1rem;
-   color: var(--darker);
+   color: var(--dark);
    cursor: pointer;
    transition: 500ms;
    background-color: var(--lighter);
+   outline: none;
 }
 
 #new-book-btn:hover {
@@ -87,16 +89,16 @@ header h1 {
 }
 
 #form-modal {
-   height: 350px;
-   width: 300px;
+   height: 450px;
+   width: 350px;
    position: fixed;
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
    background-color: var(--light);
-   padding: 20px;
-   border: var(--darker) 3px solid;
+   border: none;
    border-radius: 1rem;
+   overflow: hidden;
 }
 
 #form-modal[open] {
@@ -121,7 +123,103 @@ header h1 {
 
 #new-book-form {
    height: 100%;
+   width: 100%;
    display: flex;
    flex-direction: column;
-   justify-content: space-around;
+   justify-content: space-between;
+}
+
+#new-book-form header {
+   background-color: var(--dark);
+   height: 15%;
+}
+
+#new-book-form footer {
+   background-color: #334155;
+   height: 15%;
+}
+
+#new-book-form input {
+   color: var(--darker);
+   font-size: 1.2rem;
+   margin: 0 auto;
+   padding: 1rem;
+   border-radius: 0.2rem;
+   background-color: rgb(255, 255, 255);
+   border: none;
+   width: 90%;
+   display: block;
+
+   transition: all 0.3s;
+   outline: none;
+}
+
+.ctrl {
+   flex: 0 0 auto;
+   display: flex;
+   align-items: center;
+   background-color: #fff;
+   border-radius: 5px;
+   font-size: 1rem;
+}
+.ctrl__counter {
+   width: 100px;
+   height: 15px;
+   color: #333c48;
+   text-align: center;
+   overflow: hidden;
+}
+.ctrl__counter.is-input .ctrl__counter-num {
+   visibility: hidden;
+   opacity: 0;
+   -webkit-transition: opacity 100ms ease-in;
+   transition: opacity 100ms ease-in;
+}
+.ctrl__counter.is-input .ctrl__counter-input {
+   visibility: visible;
+   opacity: 1;
+   -webkit-transition: opacity 100ms ease-in;
+   transition: opacity 100ms ease-in;
+}
+.ctrl__counter-input {
+   width: 100%;
+   margin: 0;
+   padding: 0;
+   position: relative;
+   /* z-index: 2; */
+   box-shadow: none;
+   outline: none;
+   border: none;
+   color: #333c48;
+   font-size: 1rem;
+   /* line-height: 30px; */
+   text-align: center;
+   /* visibility: hidden; */
+   /* opacity: 0; */
+}
+.ctrl__button {
+   width: 30px;
+   line-height: 30px;
+   text-align: center;
+   color: #fff;
+   cursor: pointer;
+   background-color: var(--medium);
+   -webkit-transition: background-color 100ms ease-in;
+   transition: background-color 100ms ease-in;
+}
+.ctrl__button:hover {
+   background-color: #90a2b0;
+   -webkit-transition: background-color 100ms ease-in;
+   transition: background-color 100ms ease-in;
+}
+.ctrl__button:active {
+   background-color: #778996;
+   -webkit-transition: background-color 100ms ease-in;
+   transition: background-color 100ms ease-in;
+}
+.ctrl__button--decrement {
+   border-radius: 3px 0 0 3px;
+}
+.ctrl__button--increment {
+   border-radius: 0 3px 3px 0;
 }
