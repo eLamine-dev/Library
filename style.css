@@ -12,6 +12,8 @@
    --medium: #64748b;
    --light: #cbd5e1;
    --lighter: #f1f5f9;
+   --red: #ef4444;
+   --green: #22c55e;
 }
 
 body,
@@ -44,7 +46,7 @@ header h1 {
    margin: auto;
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-   grid-auto-rows: 300px;
+   grid-auto-rows: 350px;
    align-items: center;
    justify-items: center;
    gap: 15px;
@@ -61,12 +63,27 @@ header h1 {
    width: 100%;
    display: flex;
    flex-direction: column;
-   justify-content: space-around;
+   justify-content: space-between;
    align-items: center;
    border: none;
    border-radius: 1rem;
    color: var(--dark);
    background-color: var(--lighter);
+   font-size: 1.3rem;
+}
+
+.book-card header {
+   width: 100%;
+   height: 15%;
+   border-radius: 1rem 1rem 0 0;
+   justify-content: center;
+}
+
+.book-card footer {
+   width: 100%;
+   height: 13%;
+   display: flex;
+   justify-content: center;
 }
 
 #new-book-btn {
@@ -130,16 +147,19 @@ header h1 {
 }
 
 #new-book-form header {
-   background-color: var(--dark);
+   background-color: var(--darker);
+   justify-content: center;
    height: 15%;
+   font-size: 1.5rem;
 }
 
 #new-book-form footer {
-   background-color: #334155;
-   height: 15%;
+   height: 13%;
+   display: flex;
 }
 
-#new-book-form input {
+#new-book-form input[type='text'],
+#new-book-form input[type='number'] {
    color: var(--darker);
    font-size: 1.2rem;
    margin: 0 auto;
@@ -149,9 +169,73 @@ header h1 {
    border: none;
    width: 90%;
    display: block;
-
    transition: all 0.3s;
    outline: none;
+}
+
+#new-book-form button,
+.book-card button {
+   outline: none;
+   border: none;
+   height: 100%;
+   flex: 1;
+   color: var(--lighter);
+   font-size: 1rem;
+   cursor: pointer;
+}
+
+#cancel-book-btn,
+.remove-book {
+   background-color: var(--red);
+}
+
+#submit-new-book,
+.toggle-read {
+   background-color: var(--green);
+}
+
+#read-div {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#read {
+   transform: scale(0.5);
+}
+
+input[type='checkbox'] {
+   position: relative;
+   appearance: none;
+   width: 100px;
+   height: 50px;
+   background: #ccc;
+   border-radius: 50px;
+   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+   cursor: pointer;
+   transition: 0.4s;
+}
+
+input:checked[type='checkbox'] {
+   background: #7da6ff;
+}
+
+input[type='checkbox']::after {
+   position: absolute;
+   content: '';
+   width: 50px;
+   height: 50px;
+   top: 0;
+   left: 0;
+   background: #fff;
+   border-radius: 50%;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+   transform: scale(1.1);
+   transition: 0.4s;
+}
+
+input:checked[type='checkbox']::after {
+   left: 50%;
 }
 
 .ctrl {

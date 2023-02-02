@@ -36,9 +36,11 @@ function updateLibrary(newBook) {
    const bookCard = document.createElement('div');
    bookCard.classList.add('book-card');
    bookCard.innerHTML = `
-      <h2>${newBook.title}</h2>
-      <p>Author: ${newBook.author}</p>
-      <p>Pages: ${newBook.pages}</p>
+      <header>
+         <h2>${newBook.title}</h2>
+      </header>
+      <p>By: ${newBook.author}</p>
+      <p>${newBook.pages} pages</p>
       <div class="ctrl">
          <div class="ctrl__button ctrl__button--decrement">-</div>
          <div class="ctrl__counter">
@@ -53,11 +55,11 @@ function updateLibrary(newBook) {
           </div>
          <div class="ctrl__button ctrl__button--increment">+</div>
       </div>
-      <p id="read">Read: ${newBook.read ? 'Yes' : 'No'}</p>
-      <div class="card-buttons">
+      <p id="reading-status">Read: ${newBook.read ? 'Yes' : 'No'}</p>
+      <footer class="card-buttons">
       <button class="remove-book">Remove Book</button>
       <button class="toggle-read">Toggle Read</button>
-      </div>
+      </footer>
       `;
 
    bookCard.addEventListener('click', (event) => {
@@ -71,7 +73,7 @@ function updateLibrary(newBook) {
          console.log(booksContainer);
       } else if (event.target.classList.contains('toggle-read')) {
          library[targetIndex].toggleRead();
-         bookCard.querySelector('#read').textContent = `Read: ${
+         bookCard.querySelector('#reading-status').textContent = `Read: ${
             library[targetIndex].read ? 'Yes' : 'No'
          }`;
       }
