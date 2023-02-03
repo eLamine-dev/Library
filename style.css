@@ -23,7 +23,13 @@ html {
    background-color: var(--light);
 }
 
-header {
+button {
+   outline: none;
+   border: none;
+   font-family: 'Poppins', sans-serif;
+}
+
+#header {
    height: max(70px, 12vh);
    position: sticky;
    top: 0;
@@ -45,8 +51,8 @@ header h1 {
    height: 87vh;
    margin: auto;
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-   grid-auto-rows: 350px;
+   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+   grid-auto-rows: 300px;
    align-items: center;
    justify-items: center;
    gap: 15px;
@@ -70,26 +76,94 @@ header h1 {
    color: var(--dark);
    background-color: var(--lighter);
    font-size: 1.3rem;
+   word-wrap: break-word;
+   text-align: center;
 }
 
 .book-card header {
+   background-color: var(--dark);
    width: 100%;
    height: 15%;
    border-radius: 1rem 1rem 0 0;
-   justify-content: center;
+   display: flex;
 }
 
 .book-card footer {
    width: 100%;
-   height: 13%;
+   height: 15%;
    display: flex;
+   justify-items: stretch;
+   flex-direction: column;
+   color: var(--lighter);
+   background-color: var(--medium);
+   border-radius: 0 0 1rem 1rem;
+}
+
+.progress-ctrl {
+   display: flex;
+   align-items: center;
+   flex: 1;
+}
+
+.remove-book,
+.toggle-read {
+   flex: 1;
+   height: 100%;
+   color: var(--lighter);
+   cursor: pointer;
+   font-size: 1.2rem;
+}
+
+.remove-book {
+   border-radius: 0 1rem 0 0;
+}
+
+.toggle-read {
+   border-radius: 1rem 0 0 0;
+}
+
+.progress-button {
+   flex: 1;
+   height: 100%;
+   text-align: center;
+   cursor: pointer;
+   color: inherit;
+   background-color: var(--dark);
+   transition: background-color 100ms ease-in;
+   font-size: 1.5rem;
+}
+
+.progress-increment {
+   border-radius: 0 0 1rem 0;
+}
+
+.progress-decrement {
+   border-radius: 0 0 0 1rem;
+}
+
+.card-progress {
+   display: flex;
+   height: 100%;
+   align-items: center;
    justify-content: center;
+   flex: 5;
+}
+
+.progress-button:hover,
+button:hover {
+   filter: brightness(1.1);
+   transition: filter 100ms ease-in;
+}
+.progress-button:active,
+button:active {
+   filter: brightness(1.3);
+   transition: filter 100ms ease-in;
 }
 
 #new-book-btn {
    border: none;
    font-size: 3rem;
-   font-weight: 800;
+   font-weight: 500;
    order: 1;
    height: 100px;
    width: 100px;
@@ -147,10 +221,13 @@ header h1 {
 }
 
 #new-book-form header {
-   background-color: var(--darker);
+   display: flex;
    justify-content: center;
+   align-items: center;
+   background-color: var(--dark);
    height: 15%;
    font-size: 1.5rem;
+   color: var(--lighter);
 }
 
 #new-book-form footer {
@@ -173,15 +250,11 @@ header h1 {
    outline: none;
 }
 
-#new-book-form button,
-.book-card button {
-   outline: none;
-   border: none;
-   height: 100%;
-   flex: 1;
+#new-book-form button {
    color: var(--lighter);
    font-size: 1rem;
    cursor: pointer;
+   flex: 1;
 }
 
 #cancel-book-btn,
@@ -217,7 +290,7 @@ input[type='checkbox'] {
 }
 
 input:checked[type='checkbox'] {
-   background: #7da6ff;
+   background: var(--medium);
 }
 
 input[type='checkbox']::after {
@@ -238,72 +311,27 @@ input:checked[type='checkbox']::after {
    left: 50%;
 }
 
-.ctrl {
-   flex: 0 0 auto;
-   display: flex;
-   align-items: center;
-   background-color: #fff;
-   border-radius: 5px;
-   font-size: 1rem;
+#total-pages {
+   width: 30%;
 }
-.ctrl__counter {
-   width: 100px;
-   height: 15px;
-   color: #333c48;
-   text-align: center;
-   overflow: hidden;
-}
-.ctrl__counter.is-input .ctrl__counter-num {
-   visibility: hidden;
-   opacity: 0;
-   -webkit-transition: opacity 100ms ease-in;
-   transition: opacity 100ms ease-in;
-}
-.ctrl__counter.is-input .ctrl__counter-input {
-   visibility: visible;
-   opacity: 1;
-   -webkit-transition: opacity 100ms ease-in;
-   transition: opacity 100ms ease-in;
-}
-.ctrl__counter-input {
-   width: 100%;
+
+.progress-input {
+   width: 30%;
    margin: 0;
    padding: 0;
-   position: relative;
-   /* z-index: 2; */
    box-shadow: none;
    outline: none;
    border: none;
-   color: #333c48;
-   font-size: 1rem;
-   /* line-height: 30px; */
+   color: inherit;
+   font-family: 'Poppins', sans-serif;
+   background-color: inherit;
+   outline: none;
    text-align: center;
-   /* visibility: hidden; */
-   /* opacity: 0; */
+   font-size: 1.3rem;
 }
-.ctrl__button {
-   width: 30px;
-   line-height: 30px;
-   text-align: center;
-   color: #fff;
-   cursor: pointer;
-   background-color: var(--medium);
-   -webkit-transition: background-color 100ms ease-in;
-   transition: background-color 100ms ease-in;
-}
-.ctrl__button:hover {
-   background-color: #90a2b0;
-   -webkit-transition: background-color 100ms ease-in;
-   transition: background-color 100ms ease-in;
-}
-.ctrl__button:active {
-   background-color: #778996;
-   -webkit-transition: background-color 100ms ease-in;
-   transition: background-color 100ms ease-in;
-}
-.ctrl__button--decrement {
-   border-radius: 3px 0 0 3px;
-}
-.ctrl__button--increment {
-   border-radius: 0 3px 3px 0;
+
+.progress-input::-webkit-inner-spin-button,
+.progress-input::-webkit-outer-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
 }

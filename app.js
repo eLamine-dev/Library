@@ -37,28 +37,27 @@ function updateLibrary(newBook) {
    bookCard.classList.add('book-card');
    bookCard.innerHTML = `
       <header>
-         <h2>${newBook.title}</h2>
+      <button class="toggle-read">Edit</button>
+      <button class="remove-book">Remove</button>
+         
       </header>
+      <h2>${newBook.title}</h2>
+      
       <p>By: ${newBook.author}</p>
-      <p>${newBook.pages} pages</p>
-      <div class="ctrl">
-         <div class="ctrl__button ctrl__button--decrement">-</div>
-         <div class="ctrl__counter">
-            <input
-            id="progress"
-            class="ctrl__counter-input"
-            maxlength="10"
-            type="number"
-            value="0"
-            max="20"
-            />
-          </div>
-         <div class="ctrl__button ctrl__button--increment">+</div>
-      </div>
       <p id="reading-status">Read: ${newBook.read ? 'Yes' : 'No'}</p>
       <footer class="card-buttons">
-      <button class="remove-book">Remove Book</button>
-      <button class="toggle-read">Toggle Read</button>
+      <div class="progress-ctrl">
+         <button class="progress-button progress-decrement">-</button>
+         <div class="card-progress">
+            <input  class="progress-input" type="number" value="${
+               newBook.progress
+            }" max="20"/>
+            <p> | </p>
+            <p id="total-pages">${newBook.pages}</p>
+         </div> 
+         <button class="progress-button progress-increment">+</button>
+      </div>
+      
       </footer>
       `;
 

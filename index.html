@@ -19,10 +19,26 @@
             <header>
                <h3>Add new book</h3>
             </header>
-            <input type="text" id="title" placeholder="Title" required />
-            <input type="text" id="author" placeholder="Author" required />
-            <input type="number" id="pages" placeholder="Pages" />
-            <input type="number" id="progress" placeholder="Pages read" />
+            <input
+               type="text"
+               id="title"
+               placeholder="Title"
+               required
+               maxlength="25"
+            />
+            <input
+               type="text"
+               id="author"
+               placeholder="Author"
+               maxlength="20"
+            />
+            <input type="number" id="pages" placeholder="Pages" maxlength="4" />
+            <input
+               type="number"
+               id="progress"
+               placeholder="Pages read"
+               maxlength="4"
+            />
             <div id="read-div">
                <label for="read">Read:</label>
                <input type="checkbox" id="read" />
