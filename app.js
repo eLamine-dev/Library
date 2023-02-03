@@ -14,7 +14,7 @@ const dummyBook = {
    progress: '23',
    read: false,
 };
-updateLibrary(dummyBook);
+renderNewBook(dummyBook);
 
 class Book {
    constructor(title, author, pages, progress, read) {
@@ -37,35 +37,30 @@ function addBook() {
    const progress = newBookForm.elements.progress.value;
    const read = newBookForm.elements.read.checked;
    const newBook = new Book(title, author, pages, progress, read);
-   updateLibrary(newBook);
+   renderNewBook(newBook);
 }
 
-function updateLibrary(newBook) {
+function renderNewBook(newBook) {
    library.push(newBook);
    const bookCard = document.createElement('div');
    bookCard.classList.add('book-card');
    bookCard.innerHTML = `
       <header>
-      <button class="edit-book">Edit</button>
+      <button class="edit-book">Update</button>
       <button class="remove-book">Remove</button>
       </header>
          <h2 class="title">${newBook.title}</h2>
          <p class="author">By: ${newBook.author}</p>
-   
          <button class="reading-toggle">${
             newBook.read ? 'Read again' : 'Mark as read'
          }</button>
-         
-         
       <footer class="card-buttons">
       <div class="progress-ctrl">
          <button class="progress-button progress-decrement">-</button>
          <div class="card-progress">
-            <input  class="progress-input" type="number" value="${
-               newBook.progress
-            }" max="20"/>
+            <p id="progress-pages">${newBook.progress} </p>
             <p> | </p>
-            <p id="total-pages">${newBook.pages}</p>
+            <p id="total-pages"> ${newBook.pages}</p>
          </div> 
          <button class="progress-button progress-increment">+</button>
       </div>
