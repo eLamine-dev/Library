@@ -7,6 +7,15 @@ const newBookForm = document.getElementById('new-book-form');
 
 const library = [];
 
+const dummyBook = {
+   title: "You Don't Know JS Yet: Get Started",
+   author: 'Kyle Simpson',
+   pages: '140',
+   progress: '23',
+   read: false,
+};
+updateLibrary(dummyBook);
+
 class Book {
    constructor(title, author, pages, progress, read) {
       this.title = title;
@@ -37,14 +46,17 @@ function updateLibrary(newBook) {
    bookCard.classList.add('book-card');
    bookCard.innerHTML = `
       <header>
-      <button class="toggle-read">Edit</button>
+      <button class="edit-book">Edit</button>
       <button class="remove-book">Remove</button>
-         
       </header>
-      <h2>${newBook.title}</h2>
-      
-      <p>By: ${newBook.author}</p>
-      <p id="reading-status">Read: ${newBook.read ? 'Yes' : 'No'}</p>
+         <h2 class="title">${newBook.title}</h2>
+         <p class="author">By: ${newBook.author}</p>
+   
+         <button class="reading-toggle">${
+            newBook.read ? 'Read again' : 'Mark as read'
+         }</button>
+         
+         
       <footer class="card-buttons">
       <div class="progress-ctrl">
          <button class="progress-button progress-decrement">-</button>
@@ -57,7 +69,6 @@ function updateLibrary(newBook) {
          </div> 
          <button class="progress-button progress-increment">+</button>
       </div>
-      
       </footer>
       `;
 
@@ -72,8 +83,8 @@ function updateLibrary(newBook) {
          console.log(booksContainer);
       } else if (event.target.classList.contains('toggle-read')) {
          library[targetIndex].toggleRead();
-         bookCard.querySelector('#reading-status').textContent = `Read: ${
-            library[targetIndex].read ? 'Yes' : 'No'
+         bookCard.querySelector('#reading-status').textContent = `${
+            library[targetIndex].read ? 'Read again' : 'Finished?'
          }`;
       }
    });
