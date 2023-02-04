@@ -24,21 +24,32 @@
                id="title"
                placeholder="Title"
                required
-               maxlength="25"
+               maxlength="35"
             />
             <input
                type="text"
                id="author"
                placeholder="Author"
-               maxlength="20"
+               maxlength="25"
             />
-            <input type="number" id="pages" placeholder="Pages" maxlength="4" />
-            <input
-               type="number"
-               id="progress"
-               placeholder="Pages read"
-               maxlength="4"
-            />
+            <div id="pages-inputs">
+               <input
+                  type="number"
+                  id="pages"
+                  class="pages"
+                  placeholder="Pages"
+                  max="9999"
+                  min="0"
+               />
+               <input
+                  type="number"
+                  id="progress"
+                  class="progress"
+                  placeholder="Pages read"
+                  min="0"
+               />
+            </div>
+
             <div id="read-div">
                <label for="read">Read:</label>
                <input type="checkbox" id="read" />

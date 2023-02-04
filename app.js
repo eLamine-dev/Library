@@ -9,6 +9,36 @@ const updateBookModal = newBookModal.cloneNode(true);
 const updateBookForm = updateBookModal.querySelector('#book-form');
 const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
 
+function progressInputLimit(element) {
+   const progressInput = element.querySelector('#progress');
+   const pagesInput = element.querySelector('#pages');
+   const readToggle = element.querySelector('#read');
+
+   readToggle.addEventListener('input', () => {
+      if (readToggle.checked) progressInput.value = pagesInput.value;
+      else if (progressInput.value === pagesInput.value && !readToggle.checked)
+         progressInput.value -= 1;
+   });
+
+   progressInput.addEventListener('input', () => {
+      if (Number(progressInput.value) >= Number(pagesInput.value)) {
+         progressInput.value = pagesInput.value;
+         readToggle.checked = true;
+      } else {
+         readToggle.checked = false;
+      }
+   });
+
+   pagesInput.addEventListener('input', () => {
+      if (Number(progressInput.value) >= Number(pagesInput.value)) {
+         progressInput.value = pagesInput.value;
+         readToggle.checked = true;
+      } else {
+         readToggle.checked = false;
+      }
+   });
+}
+
 document.body.appendChild(updateBookModal);
 updateBookForm.querySelector('h3').textContent = 'Update Book';
 
@@ -41,8 +71,8 @@ renderBook(dummyBook);
 function addBook() {
    const title = newBookForm.elements.title.value;
    const author = newBookForm.elements.author.value;
-   const pages = newBookForm.elements.pages.value;
-   const progress = newBookForm.elements.progress.value;
+   const pages = Number(newBookForm.elements.pages.value);
+   const progress = Number(newBookForm.elements.progress.value);
    const read = newBookForm.elements.read.checked;
    const newBook = new Book(title, author, pages, progress, read);
    library.push(newBook);
@@ -98,6 +128,7 @@ function setupCard(bookCard, book) {
 
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
+         progressInputLimit(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
          updateBookForm.addEventListener('submit', (ev) => {
@@ -110,11 +141,11 @@ function setupCard(bookCard, book) {
          });
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
-         if (book.read) book.toggleRead();
+         if (book.progress < book.pages) book.read = false;
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('progress-increment')) {
          if (book.progress < book.pages) book.progress += 1;
-         if (book.progress === book.pages) book.toggleRead();
+         if (book.progress === book.pages) book.read = true;
          bookCard = updateCard(bookCard, book);
       }
    });
@@ -154,7 +185,9 @@ newBookModal.addEventListener('submit', (event) => {
 });
 
 newBookBtn.addEventListener('click', () => {
+   newBookForm.reset();
    newBookModal.showModal();
+   progressInputLimit(newBookForm);
 });
 
 closeNewBookForm.addEventListener('click', () => {
