@@ -1,9 +1,16 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
+const newBookModal = document.getElementById('form-modal');
+const newBookForm = newBookModal.querySelector('#book-form');
 const booksContainer = document.getElementById('books-container');
 const newBookBtn = document.getElementById('new-book-btn');
 const closeNewBookForm = document.getElementById('cancel-book-btn');
-const formModal = document.getElementById('form-modal');
-const newBookForm = document.getElementById('new-book-form');
+const updateBookModal = newBookModal.cloneNode(true);
+const updateBookForm = updateBookModal.querySelector('#book-form');
+const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
+
+document.body.appendChild(updateBookModal);
+updateBookForm.querySelector('h3').textContent = 'Update Book';
 
 const library = [];
 
@@ -37,69 +44,103 @@ function addBook() {
    const progress = newBookForm.elements.progress.value;
    const read = newBookForm.elements.read.checked;
    const newBook = new Book(title, author, pages, progress, read);
+
    renderNewBook(newBook);
 }
 
-function renderNewBook(newBook) {
-   library.push(newBook);
+function setupCard(bookObj) {
+   return `
+   <header>
+      <button class="update-book">Update</button>
+      <button class="remove-book">Remove</button>
+   </header>
+   <h2 class="title">${bookObj.title}</h2>
+   <p class="author">By: ${bookObj.author}</p>
+   <button class="reading-toggle">
+   ${bookObj.read ? 'Read again' : 'Mark as read'}
+   </button>
+   <footer class="card-buttons">
+      <div class="progress-ctrl">
+      <button class="progress-button progress-decrement">-</button>
+      <div class="card-progress">
+         <p id="progress-pages">${bookObj.progress}</p>
+         <p>|</p>
+         <p id="total-pages">${bookObj.pages}</p>
+      </div>
+      <button class="progress-button progress-increment">+</button>
+      </div>
+   </footer>
+   `;
+}
+
+function renderNewBook(book) {
+   library.push(book);
    const bookCard = document.createElement('div');
    bookCard.classList.add('book-card');
-   bookCard.innerHTML = `
-      <header>
-      <button class="edit-book">Update</button>
-      <button class="remove-book">Remove</button>
-      </header>
-         <h2 class="title">${newBook.title}</h2>
-         <p class="author">By: ${newBook.author}</p>
-         <button class="reading-toggle">${
-            newBook.read ? 'Read again' : 'Mark as read'
-         }</button>
-      <footer class="card-buttons">
-      <div class="progress-ctrl">
-         <button class="progress-button progress-decrement">-</button>
-         <div class="card-progress">
-            <p id="progress-pages">${newBook.progress} </p>
-            <p> | </p>
-            <p id="total-pages"> ${newBook.pages}</p>
-         </div> 
-         <button class="progress-button progress-increment">+</button>
-      </div>
-      </footer>
-      `;
+   bookCard.innerHTML = setupCard(book);
 
    bookCard.addEventListener('click', (event) => {
-      console.log(newBook);
-      const targetIndex = library.indexOf(newBook);
+      const targetIndex = library.indexOf(book);
+      console.log(targetIndex);
       if (event.target.classList.contains('remove-book')) {
          library.splice(targetIndex, 1);
          bookCard.remove();
 
          console.log(library);
          console.log(booksContainer);
-      } else if (event.target.classList.contains('toggle-read')) {
-         library[targetIndex].toggleRead();
-         bookCard.querySelector('#reading-status').textContent = `${
-            library[targetIndex].read ? 'Read again' : 'Finished?'
-         }`;
+      } else if (event.target.classList.contains('reading-toggle')) {
+         library[targetIndex].read = !library[targetIndex].read;
+         library[targetIndex].read
+            ? (library[targetIndex].progress = library[targetIndex].pages)
+            : (library[targetIndex].progress = 0);
+
+         bookCard.innerHTML = setupCard(library[targetIndex]);
+      } else if (event.target.classList.contains('update-book')) {
+         updateBookModal.showModal();
+         updateBookForm.elements.title.value = book.title;
+         updateBookForm.elements.author.value = book.author;
+         updateBookForm.elements.pages.value = book.pages;
+         updateBookForm.elements.progress.value = book.progress;
+         updateBookForm.elements.read.checked = book.read;
+         updateBookForm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            updateBook(targetIndex);
+            bookCard.innerHTML = setupCard(library[targetIndex]);
+            updateBookModal.close();
+            console.log(library);
+            console.log(booksContainer);
+         });
       }
    });
 
    booksContainer.appendChild(bookCard);
 }
 
-newBookForm.addEventListener('submit', (event) => {
+function updateBook(targetIndex) {
+   library[targetIndex].title = updateBookForm.elements.title.value;
+   library[targetIndex].author = updateBookForm.elements.author.value;
+   library[targetIndex].pages = updateBookForm.elements.pages.value;
+   library[targetIndex].progress = updateBookForm.elements.progress.value;
+   library[targetIndex].read = updateBookForm.elements.read.checked;
+}
+
+newBookModal.addEventListener('submit', (event) => {
    event.preventDefault();
    addBook();
-   formModal.close();
+   newBookModal.close();
    newBookForm.reset();
    console.log(library);
    console.log(booksContainer);
 });
 
 newBookBtn.addEventListener('click', () => {
-   formModal.showModal()();
+   newBookModal.showModal();
 });
 
 closeNewBookForm.addEventListener('click', () => {
-   formModal.close();
+   newBookModal.close();
+});
+
+closeUpdateBook.addEventListener('click', () => {
+   updateBookModal.close();
 });

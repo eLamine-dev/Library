@@ -127,7 +127,7 @@ header h1 {
 }
 
 .remove-book,
-.edit-book {
+.update-book {
    flex: 1;
    height: 100%;
    color: var(--lighter);
@@ -139,7 +139,7 @@ header h1 {
    border-radius: 0 1rem 0 0;
 }
 
-.edit-book {
+.update-book {
    border-radius: 1rem 0 0 0;
 }
 
@@ -234,7 +234,7 @@ button:active {
    backdrop-filter: blur(0.2rem);
 }
 
-#new-book-form {
+#book-form {
    height: 100%;
    width: 100%;
    display: flex;
@@ -242,7 +242,7 @@ button:active {
    justify-content: space-between;
 }
 
-#new-book-form header {
+#book-form header {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -252,13 +252,13 @@ button:active {
    color: var(--lighter);
 }
 
-#new-book-form footer {
+#book-form footer {
    height: 13%;
    display: flex;
 }
 
-#new-book-form input[type='text'],
-#new-book-form input[type='number'] {
+#book-form input[type='text'],
+#book-form input[type='number'] {
    color: var(--darker);
    font-size: 1.2rem;
    margin: 0 auto;
@@ -272,7 +272,7 @@ button:active {
    outline: none;
 }
 
-#new-book-form button {
+#book-form button {
    color: var(--lighter);
    font-size: 1rem;
    cursor: pointer;
@@ -285,7 +285,7 @@ button:active {
 }
 
 #submit-new-book,
-.edit-book {
+.update-book {
    background-color: var(--green);
 }
 
