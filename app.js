@@ -14,15 +14,6 @@ updateBookForm.querySelector('h3').textContent = 'Update Book';
 
 const library = [];
 
-const dummyBook = {
-   title: "You Don't Know JS Yet: Get Started",
-   author: 'Kyle Simpson',
-   pages: '140',
-   progress: '23',
-   read: false,
-};
-renderNewBook(dummyBook);
-
 class Book {
    constructor(title, author, pages, progress, read) {
       this.title = title;
@@ -37,6 +28,16 @@ class Book {
    }
 }
 
+const dummyBook = new Book(
+   "You Don't Know JS Yet: Get Started",
+   'Kyle Simpson',
+   140,
+   3,
+   false
+);
+library.push(dummyBook);
+renderBook(dummyBook);
+
 function addBook() {
    const title = newBookForm.elements.title.value;
    const author = newBookForm.elements.author.value;
@@ -44,44 +45,43 @@ function addBook() {
    const progress = newBookForm.elements.progress.value;
    const read = newBookForm.elements.read.checked;
    const newBook = new Book(title, author, pages, progress, read);
-
-   renderNewBook(newBook);
+   library.push(newBook);
+   renderBook(newBook);
 }
 
-function setupCard(bookObj) {
-   return `
+function updateCard(bookCard, book) {
+   bookCard.innerHTML = `
    <header>
       <button class="update-book">Update</button>
       <button class="remove-book">Remove</button>
    </header>
-   <h2 class="title">${bookObj.title}</h2>
-   <p class="author">By: ${bookObj.author}</p>
+   <h2 class="title">${book.title}</h2>
+   <p class="author">By: ${book.author}</p>
    <button class="reading-toggle">
-   ${bookObj.read ? 'Read again' : 'Mark as read'}
+   ${book.read ? 'Read again' : 'Mark as read'}
    </button>
    <footer class="card-buttons">
       <div class="progress-ctrl">
       <button class="progress-button progress-decrement">-</button>
       <div class="card-progress">
-         <p id="progress-pages">${bookObj.progress}</p>
+         <p id="progress-pages">${
+            book.read ? `${book.pages}` : `${book.progress}`
+         }</p>
          <p>|</p>
-         <p id="total-pages">${bookObj.pages}</p>
+         <p id="total-pages">${book.pages}</p>
       </div>
       <button class="progress-button progress-increment">+</button>
       </div>
    </footer>
    `;
+   return bookCard;
 }
 
-function renderNewBook(book) {
-   library.push(book);
-   const bookCard = document.createElement('div');
-   bookCard.classList.add('book-card');
-   bookCard.innerHTML = setupCard(book);
-
+function setupCard(bookCard, book) {
+   updateCard(bookCard, book);
    bookCard.addEventListener('click', (event) => {
       const targetIndex = library.indexOf(book);
-      console.log(targetIndex);
+      console.log(book);
       if (event.target.classList.contains('remove-book')) {
          library.splice(targetIndex, 1);
          bookCard.remove();
@@ -89,23 +89,21 @@ function renderNewBook(book) {
          console.log(library);
          console.log(booksContainer);
       } else if (event.target.classList.contains('reading-toggle')) {
-         library[targetIndex].read = !library[targetIndex].read;
-         library[targetIndex].read
-            ? (library[targetIndex].progress = library[targetIndex].pages)
-            : (library[targetIndex].progress = 0);
+         book.toggleRead();
+         if (book.read) {
+            book.progress = book.pages;
+         } else {
+            book.progress = 0;
+         }
 
-         bookCard.innerHTML = setupCard(library[targetIndex]);
+         bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
          updateBookModal.showModal();
-         updateBookForm.elements.title.value = book.title;
-         updateBookForm.elements.author.value = book.author;
-         updateBookForm.elements.pages.value = book.pages;
-         updateBookForm.elements.progress.value = book.progress;
-         updateBookForm.elements.read.checked = book.read;
+         getBookInfo(book);
          updateBookForm.addEventListener('submit', (ev) => {
             ev.preventDefault();
-            updateBook(targetIndex);
-            bookCard.innerHTML = setupCard(library[targetIndex]);
+            updateBook(book);
+            bookCard = updateCard(bookCard, book);
             updateBookModal.close();
             console.log(library);
             console.log(booksContainer);
@@ -113,15 +111,29 @@ function renderNewBook(book) {
       }
    });
 
-   booksContainer.appendChild(bookCard);
+   return bookCard;
 }
 
-function updateBook(targetIndex) {
-   library[targetIndex].title = updateBookForm.elements.title.value;
-   library[targetIndex].author = updateBookForm.elements.author.value;
-   library[targetIndex].pages = updateBookForm.elements.pages.value;
-   library[targetIndex].progress = updateBookForm.elements.progress.value;
-   library[targetIndex].read = updateBookForm.elements.read.checked;
+function renderBook(book) {
+   const bookCard = document.createElement('div');
+   bookCard.classList.add('book-card');
+   booksContainer.appendChild(setupCard(bookCard, book));
+}
+
+function getBookInfo(book) {
+   updateBookForm.elements.title.value = book.title;
+   updateBookForm.elements.author.value = book.author;
+   updateBookForm.elements.pages.value = book.pages;
+   updateBookForm.elements.progress.value = book.progress;
+   updateBookForm.elements.read.checked = book.read;
+}
+
+function updateBook(book) {
+   book.title = updateBookForm.elements.title.value;
+   book.author = updateBookForm.elements.author.value;
+   book.pages = updateBookForm.elements.pages.value;
+   book.progress = updateBookForm.elements.progress.value;
+   book.read = updateBookForm.elements.read.checked;
 }
 
 newBookModal.addEventListener('submit', (event) => {
