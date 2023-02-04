@@ -97,7 +97,7 @@ function setupCard(bookCard, book) {
 
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
-         checkInput(updateBookForm);
+         InputValidation(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
          updateBookForm.addEventListener('submit', (ev) => {
@@ -156,7 +156,7 @@ newBookModal.addEventListener('submit', (event) => {
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
-   checkInput(newBookForm);
+   InputValidation(newBookForm);
 });
 
 closeNewBookForm.addEventListener('click', () => {
@@ -167,32 +167,42 @@ closeUpdateBook.addEventListener('click', () => {
    updateBookModal.close();
 });
 
-function checkInput(element) {
+function InputValidation(element) {
    const progressInput = element.querySelector('#progress');
    const pagesInput = element.querySelector('#pages');
    const readToggle = element.querySelector('#read');
+   const numbersInputs = element.querySelectorAll('input[type=number]');
+
+   function checkNumInput() {
+      if (Number(progressInput.value) >= Number(pagesInput.value)) {
+         progressInput.value = pagesInput.value;
+         readToggle.checked = true;
+      } else {
+         readToggle.checked = false;
+      }
+   }
 
    readToggle.addEventListener('input', () => {
       if (readToggle.checked) progressInput.value = pagesInput.value;
-      else if (progressInput.value === pagesInput.value && !readToggle.checked)
+      else if (
+         progressInput.value === pagesInput.value &&
+         !readToggle.checked &&
+         progressInput.value !== ''
+      )
          progressInput.value -= 1;
    });
 
-   progressInput.addEventListener('input', () => {
-      if (Number(progressInput.value) >= Number(pagesInput.value)) {
-         progressInput.value = pagesInput.value;
-         readToggle.checked = true;
-      } else {
-         readToggle.checked = false;
-      }
+   numbersInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+         checkNumInput();
+      });
    });
 
-   pagesInput.addEventListener('input', () => {
-      if (Number(progressInput.value) >= Number(pagesInput.value)) {
-         progressInput.value = pagesInput.value;
-         readToggle.checked = true;
-      } else {
-         readToggle.checked = false;
-      }
+   numbersInputs.forEach((input) => {
+      input.addEventListener('keypress', (event) => {
+         if (event.which < 48 || event.which > 57) {
+            event.preventDefault();
+         }
+      });
    });
 }
