@@ -97,7 +97,7 @@ function setupCard(bookCard, book) {
 
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
-         // checkInput(updateBookForm);
+         checkInput(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
          updateBookForm.addEventListener('submit', (ev) => {
@@ -156,7 +156,7 @@ newBookModal.addEventListener('submit', (event) => {
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
-   // checkInput(newBookForm);
+   checkInput(newBookForm);
 });
 
 closeNewBookForm.addEventListener('click', () => {
@@ -167,32 +167,32 @@ closeUpdateBook.addEventListener('click', () => {
    updateBookModal.close();
 });
 
-// function checkInput(element) {
-//    const progressInput = element.querySelector('#progress');
-//    const pagesInput = element.querySelector('#pages');
-//    const readToggle = element.querySelector('#read');
+function checkInput(element) {
+   const progressInput = element.querySelector('#progress');
+   const pagesInput = element.querySelector('#pages');
+   const readToggle = element.querySelector('#read');
 
-//    readToggle.addEventListener('input', () => {
-//       if (readToggle.checked) progressInput.value = pagesInput.value;
-//       else if (progressInput.value === pagesInput.value && !readToggle.checked)
-//          progressInput.value -= 1;
-//    });
+   readToggle.addEventListener('input', () => {
+      if (readToggle.checked) progressInput.value = pagesInput.value;
+      else if (progressInput.value === pagesInput.value && !readToggle.checked)
+         progressInput.value -= 1;
+   });
 
-//    progressInput.addEventListener('input', () => {
-//       if (Number(progressInput.value) >= Number(pagesInput.value)) {
-//          progressInput.value = pagesInput.value;
-//          readToggle.checked = true;
-//       } else {
-//          readToggle.checked = false;
-//       }
-//    });
+   progressInput.addEventListener('input', () => {
+      if (Number(progressInput.value) >= Number(pagesInput.value)) {
+         progressInput.value = pagesInput.value;
+         readToggle.checked = true;
+      } else {
+         readToggle.checked = false;
+      }
+   });
 
-//    pagesInput.addEventListener('input', () => {
-//       if (Number(progressInput.value) >= Number(pagesInput.value)) {
-//          progressInput.value = pagesInput.value;
-//          readToggle.checked = true;
-//       } else {
-//          readToggle.checked = false;
-//       }
-//    });
-// }
+   pagesInput.addEventListener('input', () => {
+      if (Number(progressInput.value) >= Number(pagesInput.value)) {
+         progressInput.value = pagesInput.value;
+         readToggle.checked = true;
+      } else {
+         readToggle.checked = false;
+      }
+   });
+}
