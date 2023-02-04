@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 const newBookModal = document.getElementById('form-modal');
 const newBookForm = newBookModal.querySelector('#book-form');
@@ -8,36 +7,6 @@ const closeNewBookForm = document.getElementById('cancel-book-btn');
 const updateBookModal = newBookModal.cloneNode(true);
 const updateBookForm = updateBookModal.querySelector('#book-form');
 const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
-
-function progressInputLimit(element) {
-   const progressInput = element.querySelector('#progress');
-   const pagesInput = element.querySelector('#pages');
-   const readToggle = element.querySelector('#read');
-
-   readToggle.addEventListener('input', () => {
-      if (readToggle.checked) progressInput.value = pagesInput.value;
-      else if (progressInput.value === pagesInput.value && !readToggle.checked)
-         progressInput.value -= 1;
-   });
-
-   progressInput.addEventListener('input', () => {
-      if (Number(progressInput.value) >= Number(pagesInput.value)) {
-         progressInput.value = pagesInput.value;
-         readToggle.checked = true;
-      } else {
-         readToggle.checked = false;
-      }
-   });
-
-   pagesInput.addEventListener('input', () => {
-      if (Number(progressInput.value) >= Number(pagesInput.value)) {
-         progressInput.value = pagesInput.value;
-         readToggle.checked = true;
-      } else {
-         readToggle.checked = false;
-      }
-   });
-}
 
 document.body.appendChild(updateBookModal);
 updateBookForm.querySelector('h3').textContent = 'Update Book';
@@ -128,7 +97,7 @@ function setupCard(bookCard, book) {
 
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
-         progressInputLimit(updateBookForm);
+         // checkInput(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
          updateBookForm.addEventListener('submit', (ev) => {
@@ -187,7 +156,7 @@ newBookModal.addEventListener('submit', (event) => {
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
-   progressInputLimit(newBookForm);
+   // checkInput(newBookForm);
 });
 
 closeNewBookForm.addEventListener('click', () => {
@@ -197,3 +166,33 @@ closeNewBookForm.addEventListener('click', () => {
 closeUpdateBook.addEventListener('click', () => {
    updateBookModal.close();
 });
+
+// function checkInput(element) {
+//    const progressInput = element.querySelector('#progress');
+//    const pagesInput = element.querySelector('#pages');
+//    const readToggle = element.querySelector('#read');
+
+//    readToggle.addEventListener('input', () => {
+//       if (readToggle.checked) progressInput.value = pagesInput.value;
+//       else if (progressInput.value === pagesInput.value && !readToggle.checked)
+//          progressInput.value -= 1;
+//    });
+
+//    progressInput.addEventListener('input', () => {
+//       if (Number(progressInput.value) >= Number(pagesInput.value)) {
+//          progressInput.value = pagesInput.value;
+//          readToggle.checked = true;
+//       } else {
+//          readToggle.checked = false;
+//       }
+//    });
+
+//    pagesInput.addEventListener('input', () => {
+//       if (Number(progressInput.value) >= Number(pagesInput.value)) {
+//          progressInput.value = pagesInput.value;
+//          readToggle.checked = true;
+//       } else {
+//          readToggle.checked = false;
+//       }
+//    });
+// }

@@ -264,6 +264,7 @@ button:active {
 #book-form input[type='text'],
 #book-form input[type='number'] {
    color: var(--darker);
+   font-family: 'Poppins', sans-serif;
    font-size: 1.3rem;
    padding: 0.8rem;
    border-radius: 0.2rem;
