@@ -32,7 +32,7 @@ const dummyBook = new Book(
    "You Don't Know JS Yet: Get Started",
    'Kyle Simpson',
    140,
-   3,
+   138,
    false
 );
 library.push(dummyBook);
@@ -108,6 +108,14 @@ function setupCard(bookCard, book) {
             console.log(library);
             console.log(booksContainer);
          });
+      } else if (event.target.classList.contains('progress-decrement')) {
+         if (book.progress > 0) book.progress -= 1;
+         if (book.read) book.toggleRead();
+         bookCard = updateCard(bookCard, book);
+      } else if (event.target.classList.contains('progress-increment')) {
+         if (book.progress < book.pages) book.progress += 1;
+         if (book.progress === book.pages) book.toggleRead();
+         bookCard = updateCard(bookCard, book);
       }
    });
 
@@ -131,8 +139,8 @@ function getBookInfo(book) {
 function updateBook(book) {
    book.title = updateBookForm.elements.title.value;
    book.author = updateBookForm.elements.author.value;
-   book.pages = updateBookForm.elements.pages.value;
-   book.progress = updateBookForm.elements.progress.value;
+   book.pages = Number(updateBookForm.elements.pages.value);
+   book.progress = Number(updateBookForm.elements.progress.value);
    book.read = updateBookForm.elements.read.checked;
 }
 
