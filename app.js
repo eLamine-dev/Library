@@ -9,7 +9,7 @@ const updateBookForm = updateBookModal.querySelector('#book-form');
 const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
 
 document.body.appendChild(updateBookModal);
-updateBookForm.querySelector('h3').textContent = 'Update Book';
+updateBookForm.querySelector('h3').textContent = 'Edit Book';
 
 const library = [];
 
@@ -51,7 +51,7 @@ function addBook() {
 function updateCard(bookCard, book) {
    bookCard.innerHTML = `
    <header>
-      <button class="update-book">Update</button>
+      <button class="edit-book">Edit</button>
       <button class="remove-book">Remove</button>
    </header>
    <h2 class="title">${book.title}</h2>
@@ -74,8 +74,8 @@ function updateCard(bookCard, book) {
    </footer>
    `;
 
-   const readingToggle = bookCard.querySelector('.card-progress');
-   if (book.read) readingToggle.style.backgroundColor = 'var(--green)';
+   const cardProgress = bookCard.querySelector('.card-progress');
+   if (book.read) cardProgress.style.backgroundColor = 'var(--green)';
 
    return bookCard;
 }
@@ -97,7 +97,7 @@ function setupCard(bookCard, book) {
             book.progress = 0;
          }
          bookCard = updateCard(bookCard, book);
-      } else if (event.target.classList.contains('update-book')) {
+      } else if (event.target.classList.contains('edit-book')) {
          InputValidation(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
@@ -117,7 +117,6 @@ function setupCard(bookCard, book) {
          bookCard = updateCard(bookCard, book);
       }
    });
-
    return bookCard;
 }
 
