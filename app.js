@@ -8,11 +8,9 @@ const updateBookModal = newBookModal.cloneNode(true);
 const updateBookForm = updateBookModal.querySelector('#book-form');
 const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
 
-document.body.appendChild(updateBookModal);
-updateBookForm.querySelector('h3').textContent = 'Edit Book';
-
 const library = [];
 
+// Book constructor
 class Book {
    constructor(title, author, pages, progress, read) {
       this.title = title;
@@ -27,6 +25,7 @@ class Book {
    }
 }
 
+// dummy book
 const dummyBook = new Book(
    "You Don't Know JS Yet: Get Started",
    'Kyle Simpson',
@@ -35,19 +34,83 @@ const dummyBook = new Book(
    false
 );
 library.push(dummyBook);
-renderBook(dummyBook);
+createBookCard(dummyBook);
 
+// create new book from new book form values
 function addBook() {
-   const title = newBookForm.elements.title.value;
-   const author = newBookForm.elements.author.value;
-   const pages = Number(newBookForm.elements.pages.value);
-   const progress = Number(newBookForm.elements.progress.value);
-   const read = newBookForm.elements.read.checked;
-   const newBook = new Book(title, author, pages, progress, read);
+   const newBook = new Book(...getFormInputs(newBookForm));
    library.push(newBook);
-   renderBook(newBook);
+   createBookCard(newBook);
 }
 
+// Update book from update book form values
+function updateBook(book) {
+   const newValues = getFormInputs(updateBookForm);
+   Object.keys(book).forEach((key, index) => {
+      book[key] = newValues[index];
+   });
+}
+
+// Get form values
+function getFormInputs(form) {
+   const title = form.elements.title.value;
+   const author = form.elements.author.value;
+   const pages = Number(form.elements.pages.value);
+   const progress = Number(form.elements.progress.value);
+   const read = form.elements.read.checked;
+   const formValues = [title, author, pages, progress, read];
+   return formValues;
+}
+
+// create card for new book
+function createBookCard(book) {
+   // create the card
+   let bookCard = document.createElement('div');
+   bookCard.classList.add('book-card');
+   updateCard(bookCard, book);
+
+   // adding event listeners to the card, this will keep the corresponding
+   // "book" saved in scope of the card EventListener function
+   bookCard.addEventListener('click', (event) => {
+      const targetIndex = library.indexOf(book);
+
+      if (event.target.classList.contains('remove-book')) {
+         library.splice(targetIndex, 1);
+         bookCard.remove();
+      } else if (event.target.classList.contains('reading-toggle')) {
+         console.log(event.target);
+         book.toggleRead();
+         if (book.read) {
+            book.progress = book.pages;
+         } else {
+            book.progress = 0;
+         }
+         bookCard = updateCard(bookCard, book);
+      } else if (event.target.classList.contains('edit-book')) {
+         InputValidation(updateBookForm);
+         updateBookModal.showModal();
+         getBookInfo(book);
+
+         updateBookForm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            updateBook(book);
+            bookCard = updateCard(bookCard, book);
+            updateBookModal.close();
+         });
+      } else if (event.target.classList.contains('progress-decrement')) {
+         if (book.progress > 0) book.progress -= 1;
+         if (book.progress < book.pages) book.read = false;
+         bookCard = updateCard(bookCard, book);
+      } else if (event.target.classList.contains('progress-increment')) {
+         if (book.progress < book.pages) book.progress += 1;
+         if (book.progress === book.pages) book.read = true;
+         bookCard = updateCard(bookCard, book);
+      }
+   });
+   booksContainer.appendChild(bookCard);
+}
+
+// Update book card content with new/updated book info
 function updateCard(bookCard, book) {
    bookCard.innerHTML = `
    <header>
@@ -73,59 +136,17 @@ function updateCard(bookCard, book) {
       </div>
    </footer>
    `;
-
    const cardProgress = bookCard.querySelector('.card-progress');
    if (book.read) cardProgress.style.backgroundColor = 'var(--green)';
 
    return bookCard;
 }
 
-function setupCard(bookCard, book) {
-   updateCard(bookCard, book);
-   bookCard.addEventListener('click', (event) => {
-      const targetIndex = library.indexOf(book);
+// add the Update-book modal cloned from new-book modal to the dom
+document.body.appendChild(updateBookModal);
+updateBookForm.querySelector('h3').textContent = 'Edit Book';
 
-      if (event.target.classList.contains('remove-book')) {
-         library.splice(targetIndex, 1);
-         bookCard.remove();
-      } else if (event.target.classList.contains('reading-toggle')) {
-         console.log(event.target);
-         book.toggleRead();
-         if (book.read) {
-            book.progress = book.pages;
-         } else {
-            book.progress = 0;
-         }
-         bookCard = updateCard(bookCard, book);
-      } else if (event.target.classList.contains('edit-book')) {
-         InputValidation(updateBookForm);
-         updateBookModal.showModal();
-         getBookInfo(book);
-         updateBookForm.addEventListener('submit', (ev) => {
-            ev.preventDefault();
-            updateBook(book);
-            bookCard = updateCard(bookCard, book);
-            updateBookModal.close();
-         });
-      } else if (event.target.classList.contains('progress-decrement')) {
-         if (book.progress > 0) book.progress -= 1;
-         if (book.progress < book.pages) book.read = false;
-         bookCard = updateCard(bookCard, book);
-      } else if (event.target.classList.contains('progress-increment')) {
-         if (book.progress < book.pages) book.progress += 1;
-         if (book.progress === book.pages) book.read = true;
-         bookCard = updateCard(bookCard, book);
-      }
-   });
-   return bookCard;
-}
-
-function renderBook(book) {
-   const bookCard = document.createElement('div');
-   bookCard.classList.add('book-card');
-   booksContainer.appendChild(setupCard(bookCard, book));
-}
-
+// get book infos for the edit book form
 function getBookInfo(book) {
    updateBookForm.elements.title.value = book.title;
    updateBookForm.elements.author.value = book.author;
@@ -134,14 +155,7 @@ function getBookInfo(book) {
    updateBookForm.elements.read.checked = book.read;
 }
 
-function updateBook(book) {
-   book.title = updateBookForm.elements.title.value;
-   book.author = updateBookForm.elements.author.value;
-   book.pages = Number(updateBookForm.elements.pages.value);
-   book.progress = Number(updateBookForm.elements.progress.value);
-   book.read = updateBookForm.elements.read.checked;
-}
-
+// new book form submission
 newBookModal.addEventListener('submit', (event) => {
    event.preventDefault();
    addBook();
@@ -151,6 +165,7 @@ newBookModal.addEventListener('submit', (event) => {
    console.log(booksContainer);
 });
 
+// open/close new/update book form
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
@@ -165,6 +180,7 @@ closeUpdateBook.addEventListener('click', () => {
    updateBookModal.close();
 });
 
+// some numbers inputs verification while typing
 function InputValidation(element) {
    const progressInput = element.querySelector('#progress');
    const pagesInput = element.querySelector('#pages');
