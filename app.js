@@ -74,7 +74,7 @@ function updateCard(bookCard, book) {
    </footer>
    `;
 
-   const readingToggle = bookCard.querySelector('.reading-toggle');
+   const readingToggle = bookCard.querySelector('.card-progress');
    if (book.read) readingToggle.style.backgroundColor = 'var(--green)';
 
    return bookCard;
