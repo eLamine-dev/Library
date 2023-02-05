@@ -55,8 +55,8 @@ function updateCard(bookCard, book) {
       <button class="remove-book">Remove</button>
    </header>
    <h2 class="title">${book.title}</h2>
-   <p class="author">By: ${book.author}</p>
-   <button class="reading-toggle">
+   <p class="author">${book.author}</p>
+   <button class="reading-toggle" >
    ${book.read ? 'Read again' : 'Mark as read'}
    </button>
    <footer class="card-buttons">
@@ -73,6 +73,10 @@ function updateCard(bookCard, book) {
       </div>
    </footer>
    `;
+
+   const readingToggle = bookCard.querySelector('.reading-toggle');
+   if (book.read) readingToggle.style.backgroundColor = 'var(--green)';
+
    return bookCard;
 }
 
@@ -80,21 +84,18 @@ function setupCard(bookCard, book) {
    updateCard(bookCard, book);
    bookCard.addEventListener('click', (event) => {
       const targetIndex = library.indexOf(book);
-      console.log(book);
+
       if (event.target.classList.contains('remove-book')) {
          library.splice(targetIndex, 1);
          bookCard.remove();
-
-         console.log(library);
-         console.log(booksContainer);
       } else if (event.target.classList.contains('reading-toggle')) {
+         console.log(event.target);
          book.toggleRead();
          if (book.read) {
             book.progress = book.pages;
          } else {
             book.progress = 0;
          }
-
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('update-book')) {
          InputValidation(updateBookForm);
@@ -105,8 +106,6 @@ function setupCard(bookCard, book) {
             updateBook(book);
             bookCard = updateCard(bookCard, book);
             updateBookModal.close();
-            console.log(library);
-            console.log(booksContainer);
          });
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
@@ -174,8 +173,11 @@ function InputValidation(element) {
    const numbersInputs = element.querySelectorAll('input[type=number]');
 
    function checkNumInput() {
-      if (Number(progressInput.value) >= Number(pagesInput.value)) {
-         progressInput.value = pagesInput.value;
+      if (Number(progressInput.value) > Number(pagesInput.value)) {
+         progressInput.value = '';
+         progressInput.setAttribute('placeholder', '? < pages');
+         readToggle.checked = false;
+      } else if (Number(progressInput.value) === Number(pagesInput.value)) {
          readToggle.checked = true;
       } else {
          readToggle.checked = false;
@@ -189,7 +191,7 @@ function InputValidation(element) {
          !readToggle.checked &&
          progressInput.value !== ''
       )
-         progressInput.value -= 1;
+         progressInput.value = '';
    });
 
    numbersInputs.forEach((input) => {

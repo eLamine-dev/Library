@@ -12,8 +12,8 @@
    --medium: #64748b;
    --light: #cbd5e1;
    --lighter: #f1f5f9;
-   --red: #ef4444;
-   --green: #22c55e;
+   --red: #f87171;
+   --green: #0d9488;
 }
 
 body,
@@ -116,8 +116,8 @@ header h1 {
 .reading-toggle {
    align-self: center;
    width: 50%;
-   color: var(--dark);
-   background-color: var(--light);
+   color: var(--lighter);
+   background-color: var(--red);
    padding: 8px;
    font-size: 1rem;
    border-radius: 0.5rem;
@@ -299,9 +299,6 @@ button:active {
    align-items: center;
    color: var(--darker);
    font-size: 1.3rem;
-}
-
-#book-form input[type='number'] {
 }
 
 #pages-inputs {
