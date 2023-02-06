@@ -22,6 +22,8 @@ class Book {
 
    toggleRead() {
       this.read = !this.read;
+      if (this.read) this.progress = this.pages;
+      else this.progress = 0;
    }
 }
 
@@ -69,7 +71,7 @@ function createBookCard(book) {
    bookCard.classList.add('book-card');
    updateCard(bookCard, book);
 
-   // adding event listeners to the card, this will keep the corresponding
+   // adding event listeners to the created card, this will keep the corresponding
    // "book" saved in scope of the card EventListener function
    bookCard.addEventListener('click', (event) => {
       const targetIndex = library.indexOf(book);
@@ -80,17 +82,11 @@ function createBookCard(book) {
       } else if (event.target.classList.contains('reading-toggle')) {
          console.log(event.target);
          book.toggleRead();
-         if (book.read) {
-            book.progress = book.pages;
-         } else {
-            book.progress = 0;
-         }
          bookCard = updateCard(bookCard, book);
       } else if (event.target.classList.contains('edit-book')) {
          InputValidation(updateBookForm);
          updateBookModal.showModal();
          getBookInfo(book);
-
          updateBookForm.addEventListener('submit', (ev) => {
             ev.preventDefault();
             updateBook(book);
