@@ -40,28 +40,28 @@ createBookCard(dummyBook);
 
 // create new book from new book form values
 function addBook() {
-   const newBook = new Book(...getFormInputs(newBookForm));
+   const formData = getFormData(newBookForm);
+   const newBook = new Book(...Object.values(formData));
    library.push(newBook);
    createBookCard(newBook);
 }
 
 // Update book from update book form values
 function updateBook(book) {
-   const newValues = getFormInputs(updateBookForm);
-   Object.keys(book).forEach((key, index) => {
-      book[key] = newValues[index];
-   });
+   const formData = getFormData(updateBookForm);
+   Object.assign(book, formData);
 }
 
 // Get form values
-function getFormInputs(form) {
-   const title = form.elements.title.value;
-   const author = form.elements.author.value;
-   const pages = Number(form.elements.pages.value);
-   const progress = Number(form.elements.progress.value);
-   const read = form.elements.read.checked;
-   const formValues = [title, author, pages, progress, read];
-   return formValues;
+function getFormData(form) {
+   const formData = {
+      title: form.elements.title.value,
+      author: form.elements.author.value,
+      pages: Number(form.elements.pages.value),
+      progress: Number(form.elements.progress.value),
+      read: form.elements.read.checked,
+   };
+   return formData;
 }
 
 // create card for new book
