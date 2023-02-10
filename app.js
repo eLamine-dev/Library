@@ -35,15 +35,13 @@ const dummyBook = new Book(
    138,
    false
 );
-library.push(dummyBook);
-createBookCard(dummyBook);
+addBookToLibrary(dummyBook);
 
 // create new book from new book form values
-function addBook() {
+function createNewBook() {
    const formData = getFormData(newBookForm);
    const newBook = new Book(...Object.values(formData));
-   library.push(newBook);
-   createBookCard(newBook);
+   addBookToLibrary(newBook);
 }
 
 // Update book from update book form values
@@ -64,8 +62,8 @@ function getFormData(form) {
    return formData;
 }
 
-// create card for new book
-function createBookCard(book) {
+// add the book to the array and the book-cards
+function addBookToLibrary(book) {
    // create the card
    let bookCard = document.createElement('div');
    bookCard.classList.add('book-card');
@@ -80,9 +78,8 @@ function createBookCard(book) {
          library.splice(targetIndex, 1);
          bookCard.remove();
       } else if (event.target.classList.contains('reading-toggle')) {
-         console.log(event.target);
          book.toggleRead();
-         bookCard = updateCard(bookCard, book);
+         updateCard(bookCard, book);
       } else if (event.target.classList.contains('edit-book')) {
          InputValidation(updateBookForm);
          updateBookModal.showModal();
@@ -90,19 +87,22 @@ function createBookCard(book) {
          updateBookForm.addEventListener('submit', (ev) => {
             ev.preventDefault();
             updateBook(book);
-            bookCard = updateCard(bookCard, book);
+            updateCard(bookCard, book);
             updateBookModal.close();
          });
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
          if (book.progress < book.pages) book.read = false;
-         bookCard = updateCard(bookCard, book);
+         updateCard(bookCard, book);
       } else if (event.target.classList.contains('progress-increment')) {
          if (book.progress < book.pages) book.progress += 1;
          if (book.progress === book.pages) book.read = true;
-         bookCard = updateCard(bookCard, book);
+         updateCard(bookCard, book);
       }
    });
+
+   // push the book to the array and append it's card to the book-container
+   library.push(book);
    booksContainer.appendChild(bookCard);
 }
 
@@ -154,11 +154,9 @@ function getBookInfo(book) {
 // new book form submission
 newBookModal.addEventListener('submit', (event) => {
    event.preventDefault();
-   addBook();
+   createNewBook();
    newBookModal.close();
    newBookForm.reset();
-   console.log(library);
-   console.log(booksContainer);
 });
 
 // open/close new/update book form
