@@ -8,6 +8,10 @@ const updateBookModal = newBookModal.cloneNode(true);
 const updateBookForm = updateBookModal.querySelector('#book-form');
 const closeUpdateBook = updateBookModal.querySelector('#cancel-book-btn');
 
+// add the Update-book modal cloned from new-book modal to the dom
+document.body.appendChild(updateBookModal);
+updateBookForm.querySelector('h3').textContent = 'Edit Book';
+
 const library = [];
 
 // Book constructor
@@ -41,6 +45,7 @@ addBookToLibrary(dummyBook);
 function createNewBook() {
    const formData = getFormData(newBookForm);
    const newBook = new Book(...Object.values(formData));
+
    addBookToLibrary(newBook);
 }
 
@@ -62,7 +67,7 @@ function getFormData(form) {
    return formData;
 }
 
-// add the book to the array and the book-cards
+// create card for new book
 function addBookToLibrary(book) {
    // create the card
    let bookCard = document.createElement('div');
@@ -81,15 +86,28 @@ function addBookToLibrary(book) {
          book.toggleRead();
          updateCard(bookCard, book);
       } else if (event.target.classList.contains('edit-book')) {
-         InputValidation(updateBookForm);
-         updateBookModal.showModal();
          getBookInfo(book);
-         updateBookForm.addEventListener('submit', (ev) => {
-            ev.preventDefault();
-            updateBook(book);
-            updateCard(bookCard, book);
-            updateBookModal.close();
-         });
+         updateBookModal.showModal();
+
+         updateBookForm.addEventListener(
+            'submit',
+            (ev) => {
+               ev.preventDefault();
+               updateBook(book);
+               updateCard(bookCard, book);
+               updateBookModal.close();
+            },
+            { once: true }
+         );
+
+         // closeUpdateBook.addEventListener(
+         //    'click',
+         //    () => {
+         //       updateBookModal.close();
+               
+         //    },
+         //    { once: true }
+         );
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
          if (book.progress < book.pages) book.read = false;
@@ -138,10 +156,6 @@ function updateCard(bookCard, book) {
    return bookCard;
 }
 
-// add the Update-book modal cloned from new-book modal to the dom
-document.body.appendChild(updateBookModal);
-updateBookForm.querySelector('h3').textContent = 'Edit Book';
-
 // get book infos for the edit book form
 function getBookInfo(book) {
    updateBookForm.elements.title.value = book.title;
@@ -163,15 +177,10 @@ newBookModal.addEventListener('submit', (event) => {
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
-   InputValidation(newBookForm);
 });
 
 closeNewBookForm.addEventListener('click', () => {
    newBookModal.close();
-});
-
-closeUpdateBook.addEventListener('click', () => {
-   updateBookModal.close();
 });
 
 // some numbers inputs verification while typing
@@ -217,3 +226,6 @@ function InputValidation(element) {
       });
    });
 }
+
+InputValidation(updateBookForm);
+InputValidation(newBookForm);
