@@ -110,6 +110,12 @@ function addBookToLibrary(book) {
             },
             { once: true }
          );
+
+         updateBookModal.addEventListener('cancel', () => {
+            updateBookForm.removeEventListener('submit', submitUpdatedBook, {
+               once: true,
+            });
+         });
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
          if (book.progress < book.pages) book.read = false;
