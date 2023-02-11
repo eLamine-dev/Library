@@ -49,7 +49,7 @@ function createNewBook() {
    addBookToLibrary(newBook);
 }
 
-// Update book from update book form values
+// Update book from submitUpdatedBook book form values
 function updateBook(book) {
    const formData = getFormData(updateBookForm);
    Object.assign(book, formData);
@@ -79,6 +79,13 @@ function addBookToLibrary(book) {
    bookCard.addEventListener('click', (event) => {
       const targetIndex = library.indexOf(book);
 
+      function submitUpdatedBook(ev) {
+         ev.preventDefault();
+         updateBook(book);
+         updateCard(bookCard, book);
+         updateBookModal.close();
+      }
+
       if (event.target.classList.contains('remove-book')) {
          library.splice(targetIndex, 1);
          bookCard.remove();
@@ -89,24 +96,19 @@ function addBookToLibrary(book) {
          getBookInfo(book);
          updateBookModal.showModal();
 
-         updateBookForm.addEventListener(
-            'submit',
-            (ev) => {
-               ev.preventDefault();
-               updateBook(book);
-               updateCard(bookCard, book);
+         updateBookForm.addEventListener('submit', submitUpdatedBook, {
+            once: true,
+         });
+
+         closeUpdateBook.addEventListener(
+            'click',
+            () => {
+               updateBookForm.removeEventListener('submit', submitUpdatedBook, {
+                  once: true,
+               });
                updateBookModal.close();
             },
             { once: true }
-         );
-
-         // closeUpdateBook.addEventListener(
-         //    'click',
-         //    () => {
-         //       updateBookModal.close();
-               
-         //    },
-         //    { once: true }
          );
       } else if (event.target.classList.contains('progress-decrement')) {
          if (book.progress > 0) book.progress -= 1;
@@ -173,7 +175,7 @@ newBookModal.addEventListener('submit', (event) => {
    newBookForm.reset();
 });
 
-// open/close new/update book form
+// open/close new/submitUpdatedBook book form
 newBookBtn.addEventListener('click', () => {
    newBookForm.reset();
    newBookModal.showModal();
