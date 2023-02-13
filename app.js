@@ -49,7 +49,7 @@ function createNewBook() {
    addBookToLibrary(newBook);
 }
 
-// Update book from submitUpdatedBook book form values
+// Update book from update book form values
 function updateBook(book) {
    const formData = getFormData(updateBookForm);
    Object.assign(book, formData);
